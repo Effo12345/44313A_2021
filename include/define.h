@@ -26,10 +26,11 @@ extern pros::ADIEncoder encoder;
 
 //extern bool useRightAuto;
 
-extern double inToDegCF;
 typedef void(*FnPtr) ();
 extern void (*onePtLR) (), (*onePt) (), (*twoPt) (), (*none) ();
 extern FnPtr autonPointers[];
+
+extern double inToDegCF;
 
 extern int auton;
 

@@ -22,7 +22,5 @@ void (*onePtLR) (){&OnePtLR}, (*onePt) (){&OnePt}, (*twoPt) (){&TwoPt}, (*none) 
 FnPtr autonPointers[] {none, none, none, onePtLR, onePtLR, onePt, twoPt, twoPt};
 int auton = 0;
 
-float pi = 3.14159;
-float wheelDiameter = 4.25;
-float wheelCircumfrence = pi*wheelDiameter;
-double inToDegCF = (wheelDiameter / 360);
+//float pi = 3.14159;
+double inToDegCF = 26.96274;

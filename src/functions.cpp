@@ -62,44 +62,47 @@ void OnRightButton()
 
 float InToDeg(float in)
 {
-	return (in / inToDegCF);
+	return (in * inToDegCF);
 }
 
 void PID(int setpoint, const std::vector<pros::Motor> & motors)
 {
-	float kP = 0.5;
-	float kI = 0;
-	float kD = 0;
+	float kP = 0.2;
+	float kI = 0.0;
+	float kD = 0.0;
 
   int prevError;
 	int error = 6;
 
-  while(error > 5)
+  while(std::abs(error) > 2)
   {
     error = setpoint - encoder.get_value();
     int integral = integral + error;
 
-    //if(error == 0)
-      //integral = 0;
+    if(error == 0)
+      integral = 0;
 
-    /*if(error > setpoint)
+    if(integral > 12000)
 		{
-			//integral = 0;
-			std::cout << "Error is greater than setpoint \n";
-		}*/
+			integral = 0;
+		}
 
     int derivative = error - prevError;
     prevError = error;
     float power = (error*kP) + (integral*kI) + (derivative*kD);
 
-    for(pros::Motor m : motors)
-    {
-      m.move_velocity(power);
-    }
-		std::cout << error << "\n";
+    for(pros::Motor m : motors) {m.move_velocity(power);}
+
+		std::cout << error << "-";
+		//pros::lcd::set_text(5, std::to_string(error));
 
 		pros::delay(15);
   }
+
+	for(pros::Motor m : motors) {m.move_velocity(0);}
+
+	pros::lcd::set_text(5, "Setpoint: " + std::to_string(setpoint));
+	pros::lcd::set_text(6, "Encoder value: " + std::to_string(encoder.get_value()));
 }
 
 void DriveTrain(int speed/*, int rotation*/)
@@ -216,7 +219,7 @@ void NewOuttakes(int rotation, bool wait)
 
 void NewNewDriveTrain(float in)
 {
-	std::vector<pros::Motor> motors {driveFL, driveBR, driveBL, driveFR};
+	std::vector<pros::Motor> motors {driveBL, driveBR, driveFL, driveFR};
 
 	PID(InToDeg(in), motors);
 }
