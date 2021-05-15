@@ -67,14 +67,14 @@ float InToDeg(float in)
 
 void PID(int setpoint, const std::vector<pros::Motor> & motors)
 {
-	float kP = 0.2;
-	float kI = 0.0;
-	float kD = 0.0;
+	float kP = 0.5;
+	float kI = 0.008;
+	float kD = 0.015;
 
   int prevError;
 	int error = 6;
 
-  while(std::abs(error) > 2)
+  while(std::abs(error) > 3)
   {
     error = setpoint - encoder.get_value();
     int integral = integral + error;
@@ -221,7 +221,7 @@ void NewNewDriveTrain(float in)
 {
 	std::vector<pros::Motor> motors {driveBL, driveBR, driveFL, driveFR};
 
-	PID(InToDeg(in), motors);
+	PID(InToDeg(in /*- (in * .083)*/), motors);
 }
 
 
@@ -349,5 +349,5 @@ void None()
 	pros::delay(9000);
 	Intakes(0);*/
 
-	NewNewDriveTrain(12);
+	NewNewDriveTrain(37);
 }
